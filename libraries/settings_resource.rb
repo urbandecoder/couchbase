@@ -6,8 +6,13 @@ class Chef
     class CouchbaseSettings < Resource
       include Couchbase::CredentialsAttributes
 
-      attribute :group, :kind_of => String, :name_attribute => true
-      attribute :settings, :kind_of => Hash, :required => true
+      def group(arg=nil)
+        set_or_return(:group, arg, :kind_of => String, :name_attribute => true)
+      end
+
+      def settings(arg=nil)
+        set_or_return(:settings, arg, :kind_of => Hash, :required => true)
+      end
 
       def initialize(*)
         super

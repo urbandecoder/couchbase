@@ -1,6 +1,7 @@
 require "spec_helper"
 require "bucket_provider"
 require "bucket_resource"
+require "securerandom"
 
 describe Chef::Provider::CouchbaseBucket do
   let(:provider) { described_class.new new_resource, stub("run_context") }

@@ -23,9 +23,9 @@ default['couchbase']['server']['package_full_url'] = "#{node['couchbase']['serve
 
 case node['platform_family']
 when "windows"
-  default['couchbase']['server']['install_dir'] = "C:\Program Files\Couchbase\Server\"
-  default['couchbase']['server']['database_path'] = "#{node['couchbase']['server']['install_dir']}\var\lib\couchbase\data"
-  default['couchbase']['server']['log_dir'] = "#{node['couchbase']['server']['install_dir']}\var\lib\couchbase\logs"
+  default['couchbase']['server']['install_dir'] = File.join("C:","Program Files","Couchbase","Server")
+  default['couchbase']['server']['database_path'] = File.join(node['couchbase']['server']['install_dir'],"var","lib","couchbase","data")
+  default['couchbase']['server']['log_dir'] = File.join(node['couchbase']['server']['install_dir'],"var","lib","couchbase","logs")
 else
   default['couchbase']['server']['install_dir'] = "/opt/couchbase"
   default['couchbase']['server']['database_path'] = "#{node['couchbase']['server']['install_dir']}/var/lib/couchbase/data"

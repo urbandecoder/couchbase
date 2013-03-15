@@ -7,6 +7,7 @@ REQUIREMENTS
 ============
 
 Chef 0.10.10 and Ohai 0.6.12 are required due to the use of platform_family.
+Works with Chef 11.4.0
 
 Platforms
 ---------
