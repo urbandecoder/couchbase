@@ -160,6 +160,7 @@ couchbase_bucket
 
 * `bucket` - The name to use for the Couchbase bucket, defaults to the resource name
 * `cluster` - The name of the cluster the bucket belongs to, defaults to "default"
+* `type` - The type of the bucket, defaults to "couchbase"
 * `memory_quota_mb` - The bucket's per server RAM quota for the entire cluster in megabytes
 * `memory_quota_percent` The bucket's RAM quota as a percent (0.0-1.0) of the cluster's quota
 * `replicas` - Number of replica (backup) copies, defaults to 1. Set to false to disable
@@ -184,6 +185,16 @@ couchbase_bucket "pillowfight" do
   username "Administrator"
   password "password"
 end
+
+couchbase_bucket "memcached" do
+  memory_quota_mb 128
+  replicas false
+  type "memcached"
+
+  username "Administrator"
+  password "password"
+end
+
 ```
 
 Chef Solo Note
