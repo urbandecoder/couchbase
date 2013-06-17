@@ -43,6 +43,10 @@ class Chef
       	})
       end
 
+      def saslPassword(arg=nil)
+        set_or_return(:saslPassword, arg, :kind_of => String, :default => "")
+      end
+
       def initialize(*)
         super
         @action = :create
