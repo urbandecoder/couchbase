@@ -53,6 +53,9 @@ end
 case node['platform']
 when "debian", "ubuntu"
   dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
+  apt_package "libssl0.9.8" do
+    action :install
+  end
 when "redhat", "centos", "scientific", "amazon", "fedora"
   yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
 when "windows"
