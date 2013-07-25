@@ -57,6 +57,9 @@ when "debian", "ubuntu"
   end
   dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
 when "redhat", "centos", "scientific", "amazon", "fedora"
+  yum_package "libopenssl" do
+    action :install
+  end
   yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
 when "windows"
 
