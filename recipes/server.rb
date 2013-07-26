@@ -41,7 +41,7 @@ if Chef::Config[:solo]
   end
 else
   # generate all passwords
-  node.set_unless['couchbase']['server']['password'] = secure_password
+  node.default_unless['couchbase']['server']['password'] = secure_password
   node.save
 end
 
