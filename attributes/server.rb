@@ -22,18 +22,24 @@
 package_machine = node['kernel']['machine'] == "x86_64" ? "x86_64" : "x86"
 
 default['couchbase']['server']['edition'] = "community"
-default['couchbase']['server']['version'] = "2.1.1"
+default['couchbase']['server']['version'] = "2.2.0"
+
+package_base_name = if Gem::Version.new(node["couchbase"]["server"]["version"]) > Gem::Version.new("2.1.1")
+                      "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}_#{package_machine}"
+                    else
+                      "couchbase-server-#{node['couchbase']['server']['edition']}_#{package_machine}_#{node['couchbase']['server']['version']}"
+                    end
 
 case node['platform_family']
 when "debian"
-  default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{package_machine}_#{node['couchbase']['server']['version']}.deb"
+  default['couchbase']['server']['package_file'] = "#{package_base_name}.deb"
 when "rhel"
-  default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{package_machine}_#{node['couchbase']['server']['version']}.rpm"
+  default['couchbase']['server']['package_file'] = "#{package_base_name}.rpm"
 when "windows"
   if node['kernel']['machine'] != 'x86_64'
     Chef::Log.error("Couchbase Server on Windows must be installed on a 64-bit machine")
   else
-    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{package_machine}_#{node['couchbase']['server']['version']}.setup.exe"
+    default['couchbase']['server']['package_file'] = "#{package_base_name}.setup.exe"
   end
 else
   Chef::Log.error("Couchbase Server is not supported on #{node['platform_family']}")
