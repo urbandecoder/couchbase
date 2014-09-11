@@ -125,6 +125,8 @@ service "couchbase-server" do
 end
 
 couchbase_node "self" do
+  retries 5
+  retry_delay 2
   database_path node['couchbase']['server']['database_path']
 
   username node['couchbase']['server']['username']
