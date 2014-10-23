@@ -40,7 +40,7 @@ when "debian"
   end
 
 when "rhel"
-  yum_key "couchbase-rpm.key" do
+  yum_repository "couchbase-rpm.key" do
     url "http://packages.couchbase.com/rpm/couchbase-rpm.key"
     action :add
   end
