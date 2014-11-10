@@ -44,9 +44,11 @@ else
   (node.set['couchbase']['server']['password'] = secure_password && node.save) unless node['couchbase']['server']['password']
 end
 
-remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
-  source node['couchbase']['server']['package_full_url']
-  action :create_if_missing
+unless node['couchbase']['server']['use_repository']
+  remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
+    source node['couchbase']['server']['package_full_url']
+    action :create_if_missing
+  end
 end
 
 case node['platform']
