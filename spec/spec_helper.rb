@@ -1,3 +1,7 @@
+require 'rspec/expectations'
+require 'chefspec'
+require 'chefspec/berkshelf'
+
 $:.push File.expand_path(File.join("..", "..", "libraries"), __FILE__)
 
 # Requires supporting files with custom matchers and macros, etc,
