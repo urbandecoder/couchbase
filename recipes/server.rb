@@ -57,6 +57,7 @@ when "debian", "ubuntu"
   if node['couchbase']['server']['use_repository']
     package 'couchbase-server' do
       action :install
+      notifies :create, "ruby_block[block_until_operational]", :immediately
     end
   else
     dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
