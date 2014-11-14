@@ -2,7 +2,8 @@ module Couchbase
   module Client
     private
 
-    def uri_from_path(path)
+    def uri_from_path(path
+      uri_encoded_password = Addressable::URI.encode_component("#{@new_resource.password}", Addressable::URI::CharacterClasses::QUERY)
       URI.parse "http://#{@new_resource.username}:#{@new_resource.password}@localhost:8091#{path}"
     end
 
