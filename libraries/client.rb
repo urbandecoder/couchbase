@@ -4,7 +4,7 @@ module Couchbase
 
     def uri_from_path(path
       uri_encoded_password = Addressable::URI.encode_component("#{@new_resource.password}", Addressable::URI::CharacterClasses::QUERY)
-      URI.parse "http://#{@new_resource.username}:#{@new_resource.password}@localhost:8091#{path}"
+      URI.parse "http://#{@new_resource.username}:uri_encoded_password@localhost:8091#{path}"
     end
 
     def post(path, params)
