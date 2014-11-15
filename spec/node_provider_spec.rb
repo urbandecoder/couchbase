@@ -4,7 +4,7 @@ require "node_provider"
 
 describe Chef::Provider::CouchbaseNode do
   let(:provider) { described_class.new(new_resource, double("run_context")) }
-  let(:base_uri) { "#{new_resource.username}:" + Addressable::URI.encode_component(@new_resource.password, Addressable::URI::CharacterClasses::QUERY) + "@localhost:8091" }
+  let(:base_uri) { "#{new_resource.username}:" + Addressable::URI.encode_component("#{new_resource.password}", Addressable::URI::CharacterClasses::QUERY) + "@localhost:8091" }
   let(:id) { "self" }
   let(:new_database_path) { "/opt/couchbase/var/lib/couchbase/data" }
   let(:new_index_path) { "/opt/couchbase/var/lib/couchbase/data" }
@@ -14,7 +14,7 @@ describe Chef::Provider::CouchbaseNode do
       :name => "my node",
       :id => id,
       :username => "Administrator",
-      :password => "23[]2321/dsskksldö",
+      :password => "23[]2321/dsskksldö,",
       :database_path => new_database_path,
       :index_path => new_index_path,
       :updated_by_last_action => nil,
