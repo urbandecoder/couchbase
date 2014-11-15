@@ -14,7 +14,7 @@ describe Chef::Provider::CouchbaseNode do
       :name => "my node",
       :id => id,
       :username => "Administrator",
-      :password => "23[]2321/dsskksldö,",
+      :password => "23[]2321dsskksldö,",
       :database_path => new_database_path,
       :index_path => new_index_path,
       :updated_by_last_action => nil,
