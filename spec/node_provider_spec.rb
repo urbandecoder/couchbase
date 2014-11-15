@@ -5,7 +5,7 @@ require 'securerandom'
 
 describe Chef::Provider::CouchbaseNode do
   let(:provider) { described_class.new(new_resource, double("run_context")) }
-  let(:base_uri) { "#{new_resource.username}:" + Addressable::URI.encode_component(@new_resource.password, Addressable::URI::CharacterClasses::QUERY) + "localhost:8091" }
+  let(:base_uri) { "#{new_resource.username}:" + Addressable::URI.encode_component(new_resource.password, Addressable::URI::CharacterClasses::QUERY) + "localhost:8091" }
   let(:id) { "self" }
   let(:new_database_path) { "/opt/couchbase/var/lib/couchbase/data" }
   let(:new_index_path) { "/opt/couchbase/var/lib/couchbase/data" }
