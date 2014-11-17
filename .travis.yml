@@ -4,4 +4,4 @@ rvm:
 script: bundle exec rake
 notifications:
   email:
-    - sebbrandt87+git@gmail.com
+    - jdunn@aquezada.com
