@@ -5,7 +5,7 @@ require "securerandom"
 
 describe Chef::Provider::CouchbaseBucket do
   let(:provider) { described_class.new new_resource, double("run_context") }
-  let(:base_uri) { URI.encode("#{new_resource.username}") + ":" + URI.encode("#{new_resource.password}") + "@localhost:8091" }
+  let(:base_uri) { CGI::escape(new_resource.username) + ":" + CGI::escape(new_resource.password) + "@localhost:8091" }
   let(:bucket_name) { "default" }
   let(:new_bucket_type) { "couchbase" }
   let(:new_replicas) { 1 }

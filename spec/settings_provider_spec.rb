@@ -5,7 +5,7 @@ require "settings_provider"
 describe Chef::Provider::CouchbaseSettings do
   let(:provider) { described_class.new(new_resource, double("run_context")) }
   let(:new_settings) { {} }
-  let(:base_uri) { URI.encode("#{new_resource.username}") + ":" + URI.encode("#{new_resource.password}") + "@localhost:8091" }
+  let(:base_uri) { CGI::escape(new_resource.username) + ":" + CGI::escape(new_resource.password) + "@localhost:8091" }
 
   let :new_resource do
     double({
