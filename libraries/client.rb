@@ -3,7 +3,7 @@ module Couchbase
     private
 
     def uri_from_path(path)
-      URI.parse "http://" + CGI::escape(@new_resource.username) + ":" + CGI::escape(@new_resource.password + "@localhost:8091#{path}"
+      URI.parse "http://" + CGI::escape(@new_resource.username) + ":" + CGI::escape(@new_resource.password) + "@localhost:8091#{path}"
     end
 
     def post(path, params)
