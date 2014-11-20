@@ -4,7 +4,7 @@ require "node_provider"
 
 describe Chef::Provider::CouchbaseNode do
   let(:provider) { described_class.new(new_resource, double("run_context")) }
-  let(:base_uri) { "#{new_resource.username}:#{new_resource.password}@localhost:8091" }
+  let(:base_uri) { CGI::escape(new_resource.username) + ":" + CGI::escape(new_resource.password) + "@localhost:8091" }
   let(:id) { "self" }
   let(:new_database_path) { "/opt/couchbase/var/lib/couchbase/data" }
   let(:new_index_path) { "/opt/couchbase/var/lib/couchbase/data" }

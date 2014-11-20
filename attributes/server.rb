@@ -28,7 +28,7 @@ when "debian"
   default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-debian7_#{package_machine}.deb"
 when "centos", "redhat", "amazon", "scientific"
   package_machine = node['kernel']['machine'] == "x86_64" ? "x86_64" : "x86"
-  default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}-#{node['couchbase']['server']['version']}-centos6.#{package_machine}.rpm"
+  default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}_#{package_machine}.rpm"
 when "ubuntu"
   package_machine = node['kernel']['machine'] == "x86_64" ? "amd64" : "x86"
   default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-ubuntu12.04_#{package_machine}.deb"
@@ -43,7 +43,7 @@ else
   Chef::Log.error("Couchbase Server is not supported on #{node['platform_family']}")
 end
 
-default['couchbase']['server']['package_base_url'] = "http://packages.couchbase.com/releases/#{node['couchbase']['server']['version']}"
+default['couchbase']['server']['package_base_url'] = "http://packages.couchbase.com.s3.amazonaws.com/releases/#{node['couchbase']['server']['version']}"
 default['couchbase']['server']['package_full_url'] = "#{node['couchbase']['server']['package_base_url']}/#{node['couchbase']['server']['package_file']}"
 
 case node['platform_family']

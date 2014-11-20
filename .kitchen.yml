@@ -35,7 +35,7 @@ suites:
   attributes:
     couchbase:
       server:
-        password: "whatever"
+        password: '--"/<chu''''c.!#nos>=&{()}'
 
 - name: server-enterprise
   run_list:
@@ -45,8 +45,8 @@ suites:
     couchbase:
       server:
         edition: "enterprise"
-        password: "whatever"
-        version: "2.1.0"
+        password: '--"/<chu''''c.!#nos>=&{()}'
+        version: "2.5.1"
 
 - name: moxi
   run_list:

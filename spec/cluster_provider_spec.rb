@@ -4,7 +4,7 @@ require "cluster_resource"
 
 describe Chef::Provider::CouchbaseCluster do
   let(:provider) { described_class.new(new_resource, double("run_context")) }
-  let(:base_uri) { "#{new_resource.username}:#{new_resource.password}@localhost:8091" }
+  let(:base_uri) { CGI::escape(new_resource.username) + ":" + CGI::escape(new_resource.password) + "@localhost:8091" }
 
   let :new_resource do
     double({
