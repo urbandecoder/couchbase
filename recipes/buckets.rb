@@ -35,12 +35,15 @@ node['couchbase']['buckets'].each do |bucket_name, bucket_config|
     replicas     bucket_config['replicas'] if bucket_config.has_key?('replicas')
     cluster      bucket_config['cluster'] if bucket_config.has_key?('cluster')
     saslpassword bucket_config['saslpassword'] if bucket_config.has_key?('saslpassword')
-
+    
     memory_quota_mb      bucket_config['memory_quota_mb'] if bucket_config.has_key?('memory_quota_mb')
     memory_quota_percent bucket_config['memory_quota_percent'] if bucket_config.has_key?('memory_quota_percent')
     
     memory_quota_mb 100 unless bucket_config.has_key?('memory_quota_mb') or bucket_config.has_key?('memory_quota_percent')
 
+    replica_index   bucket_config['replica_index'] if bucket_config.has_key?('replica_index')
+    flush_enabled   bucket_config['flush_enabled'] if bucket_config.has_key?('flush_enabled')
+    
     username node['couchbase']['server']['username']
     password node['couchbase']['server']['password']
   end
