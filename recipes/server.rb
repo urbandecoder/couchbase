@@ -42,17 +42,27 @@ if Chef::Config[:solo]
 else
   # generate all passwords
   (node.set['couchbase']['server']['password'] = secure_password && node.save) unless node['couchbase']['server']['password']
+  (node.set['couchbase']['cluster']['password'] = secure_password && node.save) unless node['couchbase']['cluster']['password']
 end
 
-remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
-  source node['couchbase']['server']['package_full_url']
-  action :create_if_missing
+unless node['couchbase']['server']['use_repository']
+  remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
+    source node['couchbase']['server']['package_full_url']
+    action :create_if_missing
+  end
 end
 
 case node['platform']
 when "debian", "ubuntu"
   package "libssl1.0.0"
-  dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
+  if node['couchbase']['server']['use_repository']
+    package 'couchbase-server' do
+      action :install
+      notifies :create, "ruby_block[block_until_operational]", :immediately
+    end
+  else
+    dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
+  end
 when "redhat", "centos", "scientific", "amazon", "fedora"
   yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
     options node['couchbase']['server']['allow_unsigned_packages'] == true ? "--nogpgcheck" : ""
@@ -131,28 +141,68 @@ service "couchbase-server" do
   notifies :create, "ruby_block[block_until_operational]", :immediately
 end
 
-couchbase_node "self" do
-  database_path node['couchbase']['server']['database_path']
-  index_path node['couchbase']['server']['index_path']
 
-  username node['couchbase']['server']['username']
-  password node['couchbase']['server']['password']
-end
+if node['couchbase']['server']['join_cluster']
+  shellout_cmd = Mixlib::ShellOut.new('/opt/couchbase/bin/couchbase-cli server-list -c ' + \
+    node['couchbase']['cluster']['ip']  + ':' + node['couchbase']['cluster']['port'] + \
+    ' -u ' + node['couchbase']['cluster']['username'] + \
+    ' -p ' + node['couchbase']['cluster']['password'] + \
+    ' | grep ' + node['fqdn']
+  )
+  shellout_cmd.run_command
+  if shellout_cmd.error?
+    couchbase_node "self" do
+      database_path node['couchbase']['server']['database_path']
+      index_path node['couchbase']['server']['index_path']
+    
+      username node['couchbase']['server']['username']
+      password node['couchbase']['server']['password']
+    end
 
-couchbase_cluster "default" do
-  memory_quota_mb node['couchbase']['server']['memory_quota_mb']
+    execute 'cluster_join' do
+      command '/opt/couchbase/bin/couchbase-cli server-add -c ' + \
+        node['couchbase']['cluster']['ip']  + ':' + node['couchbase']['cluster']['port'] + \
+        ' --server-add=' + node['fqdn'] + ':8091' + \
+        ' --server-add-username=' + node['couchbase']['server']['username']  + \
+        ' --server-add-password=' + node['couchbase']['server']['password'] + \
+        ' -u ' + node['couchbase']['cluster']['username'] + \
+        ' -p ' + node['couchbase']['cluster']['password']
+    end
+    
+    if node['couchbase']['cluster']['auto_rebalance'] && node['couchbase']['cluster']['default_bucket']
+      execute 'cluster_rebalance' do
+        command '/opt/couchbase/bin/couchbase-cli rebalance -c ' + \
+          node['couchbase']['cluster']['ip']  + ':' + node['couchbase']['cluster']['port'] + \
+          ' --recovery-buckets="' + node['couchbase']['cluster']['default_bucket'] + '"' + \
+          ' -u ' + node['couchbase']['cluster']['username'] + \
+          ' -p ' + node['couchbase']['cluster']['password']
+      end
+    end
+  end
+else
+  couchbase_node "self" do
+    database_path node['couchbase']['server']['database_path']
+    index_path node['couchbase']['server']['index_path']
+  
+    username node['couchbase']['server']['username']
+    password node['couchbase']['server']['password']
+  end
 
-  username node['couchbase']['server']['username']
-  password node['couchbase']['server']['password']
-end
-
-couchbase_settings "web" do
-  settings({
-    "username" => node['couchbase']['server']['username'],
-    "password" => node['couchbase']['server']['password'],
-    "port" => 8091,
-  })
-
-  username node['couchbase']['server']['username']
-  password node['couchbase']['server']['password']
+  couchbase_cluster "default" do
+    memory_quota_mb node['couchbase']['server']['memory_quota_mb']
+  
+    username node['couchbase']['server']['username']
+    password node['couchbase']['server']['password']
+  end
+  
+  couchbase_settings "web" do
+    settings({
+      "username" => node['couchbase']['server']['username'],
+      "password" => node['couchbase']['server']['password'],
+      "port" => 8091,
+    })
+  
+    username node['couchbase']['server']['username']
+    password node['couchbase']['server']['password']
+  end
 end

@@ -65,3 +65,13 @@ default['couchbase']['server']['memory_quota_mb'] = Couchbase::MaxMemoryQuotaCal
 default['couchbase']['server']['port'] = 8091
 
 default['couchbase']['server']['allow_unsigned_packages'] = true
+
+default['couchbase']['server']['use_repository'] = false
+
+default['couchbase']['server']['join_cluster'] = false
+default['couchbase']['cluster']['ip'] = node['ipaddress']
+default['couchbase']['cluster']['port'] = '8091'
+default['couchbase']['cluster']['username'] = "Administrator"
+default['couchbase']['cluster']['password'] = nil
+default['couchbase']['cluster']['default_bucket'] = 'default'
+default['couchbase']['cluster']['auto_rebalance'] = true
