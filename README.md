@@ -3,7 +3,16 @@ Description
 
 Installs and configures Couchbase.
 
-[![Build Status](https://travis-ci.org/urbandecoder/couchbase.png)](https://travis-ci.org/urbandecoder/couchbase)
+[![Cookbook](https://img.shields.io/cookbook/v/couchbase-ng.svg)](https://supermarket.chef.io/cookbooks/couchbase-ng)
+[![Build Status](https://travis-ci.org/zanui/chef-couchbase-ng.png)](https://travis-ci.org/zanui/chef-couchbase-ng)
+
+> This cookbook is a fork of the [Supermarket "couchbase"](https://supermarket.chef.io/cookbooks/couchbase) cookbook with additional features that are waiting to be pulled in.
+
+Features / Fixes
+================
+
+* [woodsae] - Add options `replica_index` and `flush_enabled`
+* [DennyZhang] - [Fix issue 26](https://github.com/urbandecoder/couchbase/pull/37): couchbase_node wait until couchbase is up and running
 
 Requirements
 ============
@@ -49,7 +58,7 @@ moxi
 
 * `node['couchbase']['moxi']['version']`            - The version of moxi to install
 * `node['couchbase']['moxi']['package_file']`       - The package file to download
-* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located 
+* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located
 * `node['couchbase']['moxi']['package_full_url']`   - The full URL to the moxi package
 * `node['couchbase']['moxi']['cluster_server']`     - The bootstrap server for moxi to contact for the node list
 * `node['couchbase']['moxi']['cluster_rest_url']`   - The bootstrap server's full REST URL for retrieving the initial node list

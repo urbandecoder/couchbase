@@ -1,3 +1,8 @@
+## v1.3.2 (2015-03-19)
+
+* [woodsae] - Add options `replica_index` and `flush_enabled`
+* [DennyZhang] - [Fix issue 26](https://github.com/urbandecoder/couchbase/pull/37): couchbase_node wait until couchbase is up and running
+
 ## v1.3.0 (2014-10-25)
 
 - Update to Couchbase 3.0.0.

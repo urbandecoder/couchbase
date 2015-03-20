@@ -51,6 +51,8 @@ class Chef
           "name" => new_resource.bucket,
           "ramQuotaMB" => new_memory_quota_mb,
           "replicaNumber" => new_resource.replicas || 0,
+          "replicaIndex" => new_resource.replica_index,
+          "flushEnabled" => new_resource.flush_enabled
         }
       end
 

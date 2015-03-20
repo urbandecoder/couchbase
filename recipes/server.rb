@@ -137,6 +137,8 @@ couchbase_node "self" do
 
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
+  retries 3
+  retry_delay 5
 end
 
 couchbase_cluster "default" do

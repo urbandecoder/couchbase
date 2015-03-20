@@ -4,4 +4,4 @@ rvm:
 script: bundle exec rake
 notifications:
   email:
-    - jdunn@aquezada.com
+    - engineering@zanui.com.au
