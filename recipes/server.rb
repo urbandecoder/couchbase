@@ -88,6 +88,9 @@ ruby_block "block_until_operational" do
     end
   end
   action :nothing
+  notifies :modify, "couchbase_node[self]", :immediately
+  notifies :create_if_missing, "couchbase_cluster[default]", :immediately
+  notifies :modify, "couchbase_settings[web]", :immediately
 end
 
 directory node['couchbase']['server']['log_dir'] do
@@ -137,8 +140,7 @@ couchbase_node "self" do
 
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
-  retries 3
-  retry_delay 5
+  action :nothing
 end
 
 couchbase_cluster "default" do
@@ -146,6 +148,7 @@ couchbase_cluster "default" do
 
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
+  action :nothing
 end
 
 couchbase_settings "web" do
@@ -157,4 +160,5 @@ couchbase_settings "web" do
 
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
+  action :nothing
 end
