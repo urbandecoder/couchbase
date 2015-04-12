@@ -17,6 +17,7 @@ describe Chef::Resource::CouchbaseCluster do
 
   describe "#allowed_actions" do
     subject { resource.allowed_actions }
+    it { should include :join }
     it { should include :create_if_missing }
     it { should include :nothing }
   end
@@ -53,6 +54,36 @@ describe Chef::Resource::CouchbaseCluster do
 
     it "defaults to the name attribute" do
       resource.cluster.should == resource.name
+    end
+  end
+
+  describe "#hostname" do
+    it "can be assigned" do
+      resource.hostname "new_hostname"
+      resource.hostname.should == "new_hostname"
+    end
+
+    it "cannot be assigned an Integer" do
+      expect { resource.hostname 42 }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "defaults to localhost" do
+      resource.hostname.should == "localhost"
+    end
+  end
+
+  describe "#port" do
+    it "can be assigned" do
+      resource.port 777
+      resource.port.should == 777
+    end
+
+    it "cannot be assigned a String" do
+      expect { resource.port "42" }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "defaults to 8091" do
+      resource.port.should == 8091
     end
   end
 

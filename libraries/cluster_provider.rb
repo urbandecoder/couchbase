@@ -13,7 +13,7 @@ class Chef
         @current_resource.cluster @new_resource.cluster
         @current_resource.hostname @new_resource.hostname
         @current_resource.port @new_resource.port
-        @current_resource.exists cluster_exists
+        @current_resource.exists !!pool_data
         @current_resource.memory_quota_mb pool_memory_quota_mb if @current_resource.exists
       end
 
@@ -31,7 +31,8 @@ class Chef
       end
 
       def action_join
-        unless @current_resource.exists
+        raise "The cluster has not been created on #{@new_resource.hostname}:#{@new_resource.port}" unless @current_resource.exists
+        unless has_joined?
           post(
             "/controller/addNode",
             { 
@@ -47,12 +48,10 @@ class Chef
         end
       end
 
-      def cluster_exists
-        unless pool_data.nil?
-          pool_data['nodes'].each do |cluster_node|
-            if cluster_node['hostname'] == "#{node['ipaddress']}:#{@new_resource.port}"
-              return true
-            end
+      def has_joined?
+        pool_data['nodes'].each do |cluster_node|
+          if cluster_node['hostname'] == "#{node['ipaddress']}:#{@new_resource.port}"
+            return true
           end
         end
         return false
