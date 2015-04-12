@@ -74,12 +74,6 @@ end
 
 ruby_block "block_until_operational" do
   block do
-    Chef::Log.info "Waiting until Couchbase is listening on port #{node['couchbase']['server']['port']}"
-    until CouchbaseHelper.service_listening?(node['couchbase']['server']['port']) do
-      sleep 1
-      Chef::Log.debug(".")
-    end
-
     Chef::Log.info "Waiting until the Couchbase admin API is responding"
     test_url = URI.parse("http://localhost:#{node['couchbase']['server']['port']}")
     until CouchbaseHelper.endpoint_responding?(test_url) do
@@ -87,7 +81,6 @@ ruby_block "block_until_operational" do
       Chef::Log.debug(".")
     end
   end
-  action :nothing
 end
 
 directory node['couchbase']['server']['log_dir'] do
