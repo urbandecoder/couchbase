@@ -14,9 +14,7 @@ class Chef
         @current_resource.hostname @new_resource.hostname
         @current_resource.port @new_resource.port
         @current_resource.exists cluster_exists
-        unless @current_resource.exists
-          @current_resource.memory_quota_mb pool_memory_quota_mb if @current_resource.exists
-        end
+        @current_resource.memory_quota_mb pool_memory_quota_mb if @current_resource.exists
       end
 
       def action_create_if_missing

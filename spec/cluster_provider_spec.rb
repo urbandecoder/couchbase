@@ -3,7 +3,8 @@ require "cluster_provider"
 require "cluster_resource"
 
 describe Chef::Provider::CouchbaseCluster do
-  let(:provider) { described_class.new(new_resource, double("run_context")) }
+  let(:node_address) { "127.0.0.1" }
+  let(:provider) { described_class.new(new_resource, double("run_context", :node => { "ipaddress" => node_address })) }
   let(:base_uri) { "#{new_resource.username}:#{new_resource.password}@localhost:8091" }
 
   let :new_resource do
@@ -12,6 +13,8 @@ describe Chef::Provider::CouchbaseCluster do
       :cluster => "default",
       :username => "Administrator",
       :password => "password",
+      :hostname => "localhost",
+      :port => 8091,
       :memory_quota_mb => 256,
       :updated_by_last_action => nil,
     })
