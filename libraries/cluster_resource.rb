@@ -20,10 +20,19 @@ class Chef
       	})
       end
 
+      def hostname(arg=nil)
+        set_or_return(:hostname, arg, :kind_of => String, :default => "localhost")
+      end
+
+      def port(arg=nil)
+        set_or_return(:port, arg, :kind_of => Integer, :default => 8091)
+      end
+
       def initialize(*)
         super
         @action = :create_if_missing
         @allowed_actions.push :create_if_missing
+        @allowed_actions.push :join
         @resource_name = :couchbase_cluster
       end
     end
