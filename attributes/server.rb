@@ -37,7 +37,7 @@ when "ubuntu"
   default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-ubuntu12.04_#{package_machine}.deb"
 when "windows"
   default['couchbase']['server']['service_name'] = "CouchbaseServer"
-  default['couchbase']['server']['install_dir'] = File.join("C:","Program Files","Couchbase","Server")
+  default['couchbase']['server']['install_dir'] = File.join("c:","Program Files","Couchbase","Server")
   mem_quota = Couchbase::MaxMemoryQuotaCalculator.from_node(node).in_megabytes
   default['couchbase']['server']['memory_quota_mb'] = mem_quota - 1 if mem_quota - 1 >= 256
   if node['kernel']['machine'] != 'x86_64'
