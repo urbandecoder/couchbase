@@ -1,4 +1,5 @@
 describe_recipe "couchbase::server" do
+  let(:is_windows) { node['platform_family'] == 'windows' }
   include MiniTest::Chef::Assertions
   include MiniTest::Chef::Context
   include MiniTest::Chef::Resources
@@ -7,9 +8,10 @@ describe_recipe "couchbase::server" do
   MiniTest::Chef::Resources.register_resource :couchbase_node, :username, :password
 
   describe "couchbase-server service" do
-    let(:couchbase_server) { service "couchbase-server" }
+    let(:couchbase_server) { service node['couchbase']['server']['service_name'] }
 
     it "starts on boot" do
+      puts "ervice is #{node['couchbase']['server']['service_name'] }"
       couchbase_server.must_be_enabled
     end
 
@@ -26,8 +28,8 @@ describe_recipe "couchbase::server" do
     end
 
     it "is owned by couchbase" do
-      log_dir.with :owner, "couchbase"
-      log_dir.with :group, "couchbase"
+      log_dir.with :owner, "couchbase" unless is_windows
+      log_dir.with :group, "couchbase" unless is_windows
     end
   end
 
@@ -48,8 +50,8 @@ describe_recipe "couchbase::server" do
     end
 
     it "is owned by couchbase" do
-      database_dir.with :owner, "couchbase"
-      database_dir.with :group, "couchbase"
+      database_dir.with :owner, "couchbase" unless is_windows
+      database_dir.with :group, "couchbase" unless is_windows
     end
   end
 
@@ -61,8 +63,8 @@ describe_recipe "couchbase::server" do
     end
 
     it "is owned by couchbase" do
-      index_dir.with :owner, "couchbase"
-      index_dir.with :group, "couchbase"
+      index_dir.with :owner, "couchbase" unless is_windows
+      index_dir.with :group, "couchbase" unless is_windows
     end
   end
 
