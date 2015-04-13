@@ -14,3 +14,4 @@ Gemfile.lock
 bin/*
 .bundle/*
 .kitchen/*
+test/integration/nodes/*

@@ -22,17 +22,32 @@ platforms:
   transport:
     name: winrm
   driver_config:
-    box: win2012r2-datacenter-chef11.16.2
+    gui: true
+    box: mwrock/Windows2012R2
     vm_hostname: couchbase
-    require_chef_omnibus: false
+    require_chef_omnibus: true
+    communicator: winrm
     customize:
       memory: 1024
 
 suites:
 - name: server-community
+  provisioner:
+    name: nodes
   run_list:
   - recipe[minitest-handler]
   - recipe[couchbase::server]
+  attributes:
+    couchbase:
+      server:
+        password: "whatever"
+
+- name: second-node
+  provisioner:
+    name: nodes
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[couchbase-tests::default]
   attributes:
     couchbase:
       server:
