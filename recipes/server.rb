@@ -83,11 +83,20 @@ ruby_block "block_until_operational" do
   end
 end
 
-directory node['couchbase']['server']['log_dir'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
+
+[
+  node['couchbase']['server']['log_dir'],
+  node['couchbase']['server']['database_path'],
+  node['couchbase']['server']['index_path']
+  ].each do |dir|
+  directory dir do
+    if node['platform_family'] != 'windows'
+      owner "couchbase"
+      group "couchbase"
+      mode 0755
+    end
+    recursive true
+  end
 end
 
 ruby_block "rewrite_couchbase_log_dir_config" do
@@ -100,25 +109,11 @@ ruby_block "rewrite_couchbase_log_dir_config" do
     file.write_file
   end
 
-  notifies :restart, "service[couchbase-server]"
+  notifies :restart, "service[#{node['couchbase']['server']['service_name']}]"
   not_if "grep '#{log_dir_line}' #{static_config_file}" # XXX won't work on Windows, no 'grep'
 end
 
-directory node['couchbase']['server']['database_path'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
-end
-
-directory node['couchbase']['server']['index_path'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
-end
-
-service "couchbase-server" do
+service node['couchbase']['server']['service_name'] do
   supports :restart => true, :status => true
   action [:enable, :start]
   notifies :create, "ruby_block[block_until_operational]", :immediately
