@@ -35,8 +35,8 @@ suites:
   provisioner:
     name: nodes
   run_list:
-  - recipe[minitest-handler]
   - recipe[couchbase::server]
+  - recipe[export-node]
   attributes:
     couchbase:
       server:
@@ -46,8 +46,8 @@ suites:
   provisioner:
     name: nodes
   run_list:
-  - recipe[minitest-handler]
   - recipe[couchbase-tests::default]
+  - recipe[export-node]
   attributes:
     couchbase:
       server:
@@ -55,8 +55,8 @@ suites:
 
 - name: server-enterprise
   run_list:
-  - recipe[minitest-handler]
   - recipe[couchbase::server]
+  - recipe[export-node]
   attributes:
     couchbase:
       server:

@@ -4,3 +4,4 @@ maintainer       ''
 maintainer_email ''
 
 depends 'couchbase'
+depends 'export-node'
