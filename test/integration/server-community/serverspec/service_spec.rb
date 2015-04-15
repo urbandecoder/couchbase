@@ -11,7 +11,7 @@ else
   set :backend, :exec
 end
 
-node = JSON.parse(IO.read(File.join(ENV["TEMP"] || "/tmp", "export-node/node.json")))["default"]["couchbase"]["server"]
+node = JSON.parse(IO.read(File.join(ENV["TEMP"] || "/tmp", "kitchen/chef_node.json")))["default"]["couchbase"]["server"]
 
 describe service(node["service_name"]) do
   it { should be_enabled }
@@ -20,21 +20,21 @@ end
 
 describe file(node["log_dir"]) do
   it { should be_directory }
-  unless host_inventory['platform'] == "windows"
+  unless os[:family] == "windows"
     it { should be_owned_by "couchbase" }
     it { should be_grouped_into "couchbase" }
   end
 end
 
 describe file(File.join(node["install_dir"], "etc/couchbase/static_config")) do
-  let(:node) { JSON.parse(IO.read(File.join(ENV["TEMP"] || "/tmp", "/tmp/export-node/node.json")))["default"]["couchbase"]["server"] }
+  let(:node) { JSON.parse(IO.read(File.join(ENV["TEMP"] || "/tmp", "/tmp/kitchen/chef_node.json")))["default"]["couchbase"]["server"] }
   its(:content) { should contain "{error_logger_mf_dir, \"#{node["log_dir"]}\"}." }
   its(:content) { should_not match /error_logger_mf_dir.*error_logger_mf_dir/ }
 end
 
 describe file(node["database_path"]) do
   it { should be_directory }
-  unless host_inventory['platform'] == "windows"
+  unless os[:family] == "windows"
     it { should be_owned_by "couchbase" }
     it { should be_grouped_into "couchbase" }
   end
