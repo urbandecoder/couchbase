@@ -70,6 +70,11 @@ when "windows"
     installer_type :custom
     action :install
   end
+
+  execute "enable firewall for couchbase port" do
+    command "netsh advfirewall firewall add rule name=Couchbase dir=in action=allow protocol=TCP localport=#{node['couchbase']['server']['port']}"
+    not_if 'netsh advfirewall firewall show rule name=Couchbase'
+  end
 end
 
 ruby_block "block_until_operational" do
@@ -144,3 +149,4 @@ couchbase_settings "web" do
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
 end
+
