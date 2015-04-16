@@ -19,14 +19,13 @@ platforms:
 - name: windows-2012R2
   driver:
     name: vagrant
+    network:
+      - ["private_network", { type: "dhcp" }]
   transport:
     name: winrm
   driver_config:
     gui: true
-    box: mwrock/Windows2012R2
-    vm_hostname: couchbase
-    require_chef_omnibus: true
-    communicator: winrm
+    box: mwrock/Windows2012R2Full
     customize:
       memory: 1024
 
