@@ -17,6 +17,8 @@ platforms:
 - name: centos-6.5
 
 - name: windows-2012R2
+  run_list:
+  - recipe[couchbase-tests::ipaddress]
   driver:
     name: vagrant
     network:
