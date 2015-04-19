@@ -75,6 +75,16 @@ when "windows"
     command "netsh advfirewall firewall add rule name=Couchbase dir=in action=allow protocol=TCP localport=#{node['couchbase']['server']['port']}"
     not_if 'netsh advfirewall firewall show rule name=Couchbase'
   end
+
+  execute "enable firewall for erlang port mapper" do
+    command "netsh advfirewall firewall add rule name=ErlangPortMapper dir=in action=allow protocol=TCP localport=4369"
+    not_if 'netsh advfirewall firewall show rule name=ErlangPortMapper'
+  end
+
+  execute "enable firewall for otp ports" do
+    command "netsh advfirewall firewall add rule name=OtpPorts dir=in action=allow protocol=TCP localport=21100-21109"
+    not_if 'netsh advfirewall firewall show rule name=OtpPorts'
+  end
 end
 
 ruby_block "block_until_operational" do
