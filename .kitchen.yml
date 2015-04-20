@@ -17,8 +17,6 @@ platforms:
 - name: centos-6.5
 
 - name: windows-2012R2
-  run_list:
-  - recipe[couchbase-tests::ipaddress]
   driver:
     name: vagrant
     network:
@@ -36,6 +34,7 @@ suites:
   provisioner:
     name: nodes
   run_list:
+  - recipe[couchbase-tests::ipaddress]
   - recipe[couchbase::server]
   - recipe[export-node]
   attributes:
@@ -47,6 +46,7 @@ suites:
   provisioner:
     name: nodes
   run_list:
+  - recipe[couchbase-tests::ipaddress]
   - recipe[couchbase-tests::default]
   - recipe[export-node]
   attributes:
