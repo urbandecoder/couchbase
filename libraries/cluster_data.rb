@@ -9,8 +9,15 @@ module Couchbase
     def pool_data
       return @pool_data if instance_variable_defined? "@pool_data"
 
+      hostname = @new_resource.respond_to?("hostname") ? @new_resource.hostname : "localhost"
+      port = @new_resource.respond_to?("port") ? @new_resource.port : "8091"
+
       @pool_data ||= begin
-        response = get "/pools/#{@new_resource.cluster}"
+        response = get(
+          "/pools/#{@new_resource.cluster}",
+          hostname,
+          port
+        )
         response.error! unless response.kind_of?(Net::HTTPSuccess) || response.kind_of?(Net::HTTPNotFound)
         Chef::JSONCompat.from_json response.body if response.kind_of? Net::HTTPSuccess
       end

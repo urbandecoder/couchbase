@@ -7,16 +7,27 @@ module Couchbase
 
     class << self
       def from_node(node)
-        if node["memory"].nil?
+        if node["memory"].nil? && node['platform_family'] != 'windows'
           # Usually nodes have this set, except if running in RSpec without Fauxhai,
           # so set some dummy value
           new kilobytes_to_bytes 0.to_i
         else
-          new kilobytes_to_bytes node["memory"]['total'].to_i
+          new kilobytes_to_bytes total_memory(node)
         end
       end
 
       protected
+
+      def total_memory(node)
+        if node['platform_family'] == 'windows'
+          wmi = ::WIN32OLE.connect('winmgmts://')
+          res = wmi.ExecQuery('select Capacity from Win32_PhysicalMemory')
+          mem = res.each.next.capacity
+          mem.to_i / 1024
+        else
+          node['memory']['total'].to_i
+        end
+      end
 
       def kilobytes_to_bytes(kilobytes)
         kilobytes * 1024

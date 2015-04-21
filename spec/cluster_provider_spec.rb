@@ -3,7 +3,9 @@ require "cluster_provider"
 require "cluster_resource"
 
 describe Chef::Provider::CouchbaseCluster do
-  let(:provider) { described_class.new(new_resource, double("run_context")) }
+  let(:node_address) { "127.0.0.1" }
+  let(:hostname) { "localhost" }
+  let(:provider) { described_class.new(new_resource, double("run_context", :node => { "ipaddress" => node_address })) }
   let(:base_uri) { "#{new_resource.username}:#{new_resource.password}@localhost:8091" }
 
   let :new_resource do
@@ -12,6 +14,8 @@ describe Chef::Provider::CouchbaseCluster do
       :cluster => "default",
       :username => "Administrator",
       :password => "password",
+      :hostname => hostname,
+      :port => 8091,
       :memory_quota_mb => 256,
       :updated_by_last_action => nil,
     })
@@ -133,6 +137,57 @@ describe Chef::Provider::CouchbaseCluster do
       let(:cluster_exists) { true }
       let(:memory_quota_mb) { new_resource.memory_quota_mb * 2 }
       subject { provider.action_create_if_missing }
+      it_should_behave_like "a no op provider action"
+    end
+  end
+
+  describe "#action_join" do
+    before do
+      provider.current_resource = double({
+        :cluster => "default",
+        :exists => cluster_exists
+      })
+    end
+    let(:cluster_exists) { true }
+
+    context "cluster does not exist" do
+      let(:cluster_exists) { false }
+
+      it "should raise error" do
+        expect { provider.action_join }.to raise_error
+      end
+    end
+
+    context "has not joined cluster" do
+      let(:node_address) { "1.2.3.4" }
+
+      before { stub_request(:get, "#{base_uri}/pools/default").to_return(fixture("pools_default_exists.http")) }
+
+      let! :cluster_request do
+        stub_request(:post, "#{base_uri}/controller/addNode").with({
+          :body => hash_including("hostname" => node_address),
+        })
+      end
+
+      it "POSTs to the Management REST API to add node to the cluster" do
+        provider.action_join
+        cluster_request.should have_been_made.once
+      end
+
+      it "updates the new resource" do
+        new_resource.should_receive(:updated_by_last_action).with(true)
+        provider.action_join
+      end
+
+      it "logs the join" do
+        Chef::Log.should_receive(:info).with(/joined/)
+        provider.action_join
+      end
+    end
+
+    context "has already joined cluster" do
+      before { stub_request(:get, "#{base_uri}/pools/default").to_return(fixture("pools_default_exists.http")) }
+      subject { provider.action_join }
       it_should_behave_like "a no op provider action"
     end
   end

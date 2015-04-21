@@ -1,9 +1,6 @@
 ---
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
-  customize:
-    memory: 1024
+driver:
+  name: docker
 
 provisioner:
   name: chef_zero
@@ -20,18 +17,38 @@ platforms:
 - name: centos-6.5
 
 - name: windows-2012R2
+  driver:
+    name: vagrant
+    network:
+      - ["private_network", { type: "dhcp" }]
   transport:
     name: winrm
   driver_config:
-    box: win2012r2-datacenter-chef11.16.2
-    vm_hostname: couchbase
-    require_chef_omnibus: false
+    gui: true
+    box: mwrock/Windows2012R2Full
+    customize:
+      memory: 1024
 
 suites:
 - name: server-community
+  provisioner:
+    name: nodes
   run_list:
-  - recipe[minitest-handler]
+  - recipe[couchbase-tests::ipaddress]
   - recipe[couchbase::server]
+  - recipe[export-node]
+  attributes:
+    couchbase:
+      server:
+        password: "whatever"
+
+- name: second-node
+  provisioner:
+    name: nodes
+  run_list:
+  - recipe[couchbase-tests::ipaddress]
+  - recipe[couchbase-tests::default]
+  - recipe[export-node]
   attributes:
     couchbase:
       server:
@@ -39,8 +56,8 @@ suites:
 
 - name: server-enterprise
   run_list:
-  - recipe[minitest-handler]
   - recipe[couchbase::server]
+  - recipe[export-node]
   attributes:
     couchbase:
       server:

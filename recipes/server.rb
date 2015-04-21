@@ -70,16 +70,25 @@ when "windows"
     installer_type :custom
     action :install
   end
+
+  execute "enable firewall for couchbase port" do
+    command "netsh advfirewall firewall add rule name=Couchbase dir=in action=allow protocol=TCP localport=#{node['couchbase']['server']['port']}"
+    not_if 'netsh advfirewall firewall show rule name=Couchbase'
+  end
+
+  execute "enable firewall for erlang port mapper" do
+    command "netsh advfirewall firewall add rule name=ErlangPortMapper dir=in action=allow protocol=TCP localport=4369"
+    not_if 'netsh advfirewall firewall show rule name=ErlangPortMapper'
+  end
+
+  execute "enable firewall for otp ports" do
+    command "netsh advfirewall firewall add rule name=OtpPorts dir=in action=allow protocol=TCP localport=21100-21109"
+    not_if 'netsh advfirewall firewall show rule name=OtpPorts'
+  end
 end
 
 ruby_block "block_until_operational" do
   block do
-    Chef::Log.info "Waiting until Couchbase is listening on port #{node['couchbase']['server']['port']}"
-    until CouchbaseHelper.service_listening?(node['couchbase']['server']['port']) do
-      sleep 1
-      Chef::Log.debug(".")
-    end
-
     Chef::Log.info "Waiting until the Couchbase admin API is responding"
     test_url = URI.parse("http://localhost:#{node['couchbase']['server']['port']}")
     until CouchbaseHelper.endpoint_responding?(test_url) do
@@ -87,14 +96,22 @@ ruby_block "block_until_operational" do
       Chef::Log.debug(".")
     end
   end
-  action :nothing
 end
 
-directory node['couchbase']['server']['log_dir'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
+
+[
+  node['couchbase']['server']['log_dir'],
+  node['couchbase']['server']['database_path'],
+  node['couchbase']['server']['index_path']
+  ].each do |dir|
+  directory dir do
+    if node['platform_family'] != 'windows'
+      owner "couchbase"
+      group "couchbase"
+      mode 0755
+    end
+    recursive true
+  end
 end
 
 ruby_block "rewrite_couchbase_log_dir_config" do
@@ -107,25 +124,11 @@ ruby_block "rewrite_couchbase_log_dir_config" do
     file.write_file
   end
 
-  notifies :restart, "service[couchbase-server]"
+  notifies :restart, "service[#{node['couchbase']['server']['service_name']}]"
   not_if "grep '#{log_dir_line}' #{static_config_file}" # XXX won't work on Windows, no 'grep'
 end
 
-directory node['couchbase']['server']['database_path'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
-end
-
-directory node['couchbase']['server']['index_path'] do
-  owner "couchbase"
-  group "couchbase"
-  mode 0755
-  recursive true
-end
-
-service "couchbase-server" do
+service node['couchbase']['server']['service_name'] do
   supports :restart => true, :status => true
   action [:enable, :start]
   notifies :create, "ruby_block[block_until_operational]", :immediately
@@ -156,3 +159,4 @@ couchbase_settings "web" do
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']
 end
+
