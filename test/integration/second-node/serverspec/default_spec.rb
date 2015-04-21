@@ -22,6 +22,10 @@ describe "cluster" do
     JSON.parse(resp.body)
   end
 
+  it "has found the priary node and it is not itself" do
+    expect(node["normal"]["couchbase-tests"]["primary_ip"]).not_to eq(node['automatic']['ipaddress'])
+  end
+
   it "has joined the primary cluster" do
     joined = false
     response['nodes'].each do |cluster_node|
