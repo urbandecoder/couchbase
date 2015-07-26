@@ -25,7 +25,7 @@ platforms:
     name: winrm
   driver_config:
     gui: true
-    box: mwrock/Windows2012R2Full
+    box: mwrock/Windows2012R2
     customize:
       memory: 1024
 
