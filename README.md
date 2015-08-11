@@ -47,6 +47,7 @@ couchbase-server
 * `node['couchbase']['server']['allow_unsigned_packages']` - Whether to allow Couchbase's unsigned packages to be installed (default to 'true')
 * `node['couchbase']['server']['community_edition_guid']` - The GUID of community edition of couchbase-server. Default value set
 * `node['couchbase']['server']['enterprise_edition_guid']` - The GUID of enterprise edition of couchbase-server. Default value set
+* `['couchbase']['server']['service_name']` - name of couchbase-server service. Default "couchbase-server"
 
 client
 ------

@@ -77,5 +77,6 @@ default['couchbase']['server']['password'] = nil
 default['couchbase']['server']['memory_quota_mb'] = Couchbase::MaxMemoryQuotaCalculator.from_node(node).in_megabytes
 
 default['couchbase']['server']['port'] = 8091
+default['couchbase']['server']['service_name'] = "couchbase-server"
 
 default['couchbase']['server']['allow_unsigned_packages'] = true
