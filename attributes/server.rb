@@ -21,6 +21,8 @@
 
 default['couchbase']['server']['edition'] = "community"
 default['couchbase']['server']['version'] = "3.0.0"
+default['couchbase']['server']['community_edition_guid'] = "9E3DC4AA-46D9-4B30-9643-2A97169F02A7"
+default['couchbase']['server']['enterprise_edition_guid'] = "DD309984-2414-FDF4-11AA-85A733064291"
 
 case node['platform']
 when "debian"
