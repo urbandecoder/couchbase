@@ -61,9 +61,11 @@ default['couchbase']['server']['package_base_url'] = "http://packages.couchbase.
 default['couchbase']['server']['package_full_url'] = "#{node['couchbase']['server']['package_base_url']}/#{node['couchbase']['server']['package_file']}"
 
 case node['platform_family']
-when "windows"
+  when "windows"
+  default['couchbase']['server']['service_name'] = "CouchbaseServer"
   default['couchbase']['server']['install_dir'] = File.join("C:","Program Files","Couchbase","Server")
-else
+  else
+  default['couchbase']['server']['service_name'] = "couchbase-server"
   default['couchbase']['server']['install_dir'] = "/opt/couchbase"
 end
 
@@ -77,6 +79,5 @@ default['couchbase']['server']['password'] = nil
 default['couchbase']['server']['memory_quota_mb'] = Couchbase::MaxMemoryQuotaCalculator.from_node(node).in_megabytes
 
 default['couchbase']['server']['port'] = 8091
-default['couchbase']['server']['service_name'] = "couchbase-server"
 
 default['couchbase']['server']['allow_unsigned_packages'] = true
