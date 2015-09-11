@@ -13,4 +13,5 @@ vendor
 Gemfile.lock
 bin/*
 .bundle/*
+.kitchen/*
 
