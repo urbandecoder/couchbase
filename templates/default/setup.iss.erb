@@ -1,17 +1,18 @@
-[{9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-DlgOrder]
-Dlg0={9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdWelcome-0
+<% @guid = node['couchbase']['server']["#{node['couchbase']['server']['edition']}_edition_guid"] %>
+[{<%= @guid %>}-DlgOrder]
+Dlg0={<%= @guid %>}-SdWelcome-0
 Count=4
-Dlg1={9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdAskDestPath-0
-Dlg2={9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdStartCopy2-0
-Dlg3={9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdFinish-0
-[{9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdWelcome-0]
+Dlg1={<%= @guid %>}-SdAskDestPath-0
+Dlg2={<%= @guid %>}-SdStartCopy2-0
+Dlg3={<%= @guid %>}-SdFinish-0
+[{<%= @guid %>}-SdWelcome-0]
 Result=1
-[{9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdAskDestPath-0]
+[{<%= @guid %>}-SdAskDestPath-0]
 szDir=<%= node['couchbase']['server']['install_dir'] %>
 Result=1
-[{9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdStartCopy2-0]
+[{<%= @guid %>}-SdStartCopy2-0]
 Result=1
-[{9E3DC4AA-46D9-4B30-9643-2A97169F02A7}-SdFinish-0]
+[{<%= @guid %>}-SdFinish-0]
 Result=1
 bOpt1=0
 bOpt2=0
