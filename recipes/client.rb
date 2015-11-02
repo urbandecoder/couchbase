@@ -40,10 +40,6 @@ when "debian"
   end
 
 when "rhel"
-  yum_repository "couchbase-rpm.key" do
-    url "http://packages.couchbase.com/rpm/couchbase-rpm.key"
-    action :add
-  end
 
   case
   when node['platform_version'].to_f >= 5.0 && node['platform_version'].to_f < 6.0
@@ -57,8 +53,9 @@ when "rhel"
   yum_repository "couchbase" do
     name "couchbase"
     description "Couchbase package repository"
-    url "http://packages.couchbase.com/rpm/#{osver}/$basearch/"
-    action :add
+    baseurl "http://packages.couchbase.com/rpm/#{osver}/$basearch/"
+    gpgkey 'http://packages.couchbase.com/rpm/couchbase-rpm.key'
+    action :create
   end
 
   %w{libcouchbase2 libcouchbase-devel}.each do |p|
