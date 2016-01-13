@@ -12,12 +12,14 @@ class Chef
         @current_resource = Resource::CouchbaseBucket.new @new_resource.name
         @current_resource.bucket @new_resource.bucket
         @current_resource.cluster @new_resource.cluster
+        @current_resource.proxyport @new_resource.proxyport
         @current_resource.exists !!bucket_data
 
         if @current_resource.exists
           @current_resource.type bucket_type
           @current_resource.memory_quota_mb bucket_memory_quota_mb
           @current_resource.replicas bucket_replicas
+          @current_resource.proxyport proxyport
         end
       end
 
@@ -50,6 +52,7 @@ class Chef
           "bucketType" => new_api_type,
           "name" => new_resource.bucket,
           "ramQuotaMB" => new_memory_quota_mb,
+          "proxyPort" => new_resource.proxyport,
           "replicaNumber" => new_resource.replicas || 0,
         }
       end
@@ -74,6 +77,10 @@ class Chef
 
       def bucket_replicas
         bucket_data["replicaNumber"]
+      end
+
+      def proxyport
+        bucket_data["proxyPort"]
       end
 
       def bucket_type
