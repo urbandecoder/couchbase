@@ -131,6 +131,34 @@ describe Chef::Resource::CouchbaseBucket do
       "Option memory_quota_percent's value #{negative_number} must be a positive number!"
     end
   end
+    describe "#proxyport" do
+    
+    it "can be assigned 11217" do
+      resource.proxyport 11217
+      resource.proxyport.should == 11217
+    end
+
+    it "cannot be assigned a String" do
+      expect { resource.proxyport "one" }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "cannot be assigned a Float" do
+      expect { resource.proxyport 11215.5 }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "cannot be assigned false" do
+      expect { resource.proxyport false }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "cannot be assigned true" do
+      expect { resource.proxyport true }.to raise_error Chef::Exceptions::ValidationFailed
+    end
+
+    it "cannot be assigned a negative number" do
+      negative_number = -rand
+      expect { resource.proxyport negative_number }.to raise_error Chef::Exceptions::ValidationFailed, "Option proxyport's value -3 must be a non-negative integer!"
+    end
+  end
 
   describe "#replicas" do
     it "can be assigned 1" do
