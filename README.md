@@ -5,13 +5,6 @@ Installs and configures Couchbase.
 
 [![Build Status](https://travis-ci.org/urbandecoder/couchbase.png)](https://travis-ci.org/urbandecoder/couchbase)
 
-Adopt Me!
-=========
-
-**This cookbook is up for adoption.** Ever since I started working at Chef Software, Inc. I have not had
-the need to use Couchbase. Therefore I find it difficult to keep up with the issues & PRs being filed on
-this cookbook. If you can help, or become a co-maintainer, please contact me: jdunn@chef.io
-
 Requirements
 ============
 
@@ -59,7 +52,7 @@ moxi
 
 * `node['couchbase']['moxi']['version']`            - The version of moxi to install
 * `node['couchbase']['moxi']['package_file']`       - The package file to download
-* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located 
+* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located
 * `node['couchbase']['moxi']['package_full_url']`   - The full URL to the moxi package
 * `node['couchbase']['moxi']['cluster_server']`     - The bootstrap server for moxi to contact for the node list
 * `node['couchbase']['moxi']['cluster_rest_url']`   - The bootstrap server's full REST URL for retrieving the initial node list
