@@ -1,3 +1,7 @@
+## v1.3.3 (2016-02-05)
+
+- remove old 'Adopt me message from readme'
+
 ## v1.3.2 (2015-08-28)
 
 - Revert package_machine calculation - broke some environments
@@ -10,7 +14,7 @@
 
 - Remove resource cloning.
 - Fix package version naming, etc. for current releases.
-- [GH-43] Bugfix: URI encode the server path. 
+- [GH-43] Bugfix: URI encode the server path.
 
 ## v1.3.0 (2014-10-25)
 
