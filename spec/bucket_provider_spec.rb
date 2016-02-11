@@ -11,6 +11,7 @@ describe Chef::Provider::CouchbaseBucket do
   let(:new_replicas) { 1 }
   let(:new_memory_quota_mb) { 100 }
   let(:new_memory_quota_percent) { nil }
+  let(:new_proxyport) { 11217 }
 
   let :new_resource do
     double({
@@ -25,6 +26,7 @@ describe Chef::Provider::CouchbaseBucket do
       :memory_quota_percent => new_memory_quota_percent,
       :replicas => new_replicas,
       :updated_by_last_action => nil,
+      :proxyport => new_proxyport,
     })
   end
 

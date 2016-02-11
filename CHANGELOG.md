@@ -1,3 +1,7 @@
+## v1.4.2 (2016-01-12)
+
+- Adding functionality to allow bucket creation on dedicated ports.
+
 ## v1.3.2 (2015-08-28)
 
 - Revert package_machine calculation - broke some environments

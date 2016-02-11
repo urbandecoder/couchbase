@@ -17,6 +17,10 @@ class Chef
       def exists(arg=nil)
         set_or_return(:exists, arg, :kind_of => [TrueClass, FalseClass], :required => true)
       end
+      
+      def proxyport(arg=nil)
+        set_or_return(:proxyport, arg, :kind_of => Integer)
+      end
 
       def memory_quota_mb(arg=nil)
         set_or_return(:memory_quota_mb, arg, :kind_of => Integer, :callbacks => {
