@@ -40,7 +40,11 @@ module CouchbaseHelper
   def self.endpoint_responding?(url)
     # XXX Should probably not use Chef::REST for this. Chef::REST only
     # Accepts application/json; why not just use Net::HTTP directly?
-    response = Chef::REST::RESTRequest.new(:GET, url, nil).call
+    begin
+      response = Chef::REST::RESTRequest.new(:GET, url, nil).call
+    rescue Errno::ECONNREFUSED, Errno::ENETUNREACH
+      return false
+    end
     if response.kind_of?(Net::HTTPSuccess) ||
           response.kind_of?(Net::HTTPRedirection) ||
           response.kind_of?(Net::HTTPForbidden)
