@@ -12,6 +12,7 @@ Cache-Control: no-cache
     "authType":"sasl",
     "saslPassword":"",
     "proxyPort":0,
+    "flushEnabled":0,
     "uri":"/pools/default/buckets/default",
     "streamingUri":"/pools/default/bucketsStreaming/default",
     "flushCacheUri":"/pools/default/buckets/default/controller/doFlush",

@@ -12,6 +12,7 @@ Cache-Control: no-cache
     "authType":"sasl",
     "saslPassword":"",
     "proxyPort":0,
+    "flushEnabled":0,
     "replicaIndex":true,
     "uri":"/pools/default/buckets/memcached",
     "streamingUri":"/pools/default/bucketsStreaming/memcached",

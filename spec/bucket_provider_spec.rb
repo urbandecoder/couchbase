@@ -27,6 +27,7 @@ describe Chef::Provider::CouchbaseBucket do
       :replicas => new_replicas,
       :updated_by_last_action => nil,
       :proxyport => new_proxyport,
+      :flush_enabled => 0,
     })
   end
 
