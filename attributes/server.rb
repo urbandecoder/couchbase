@@ -43,8 +43,10 @@ when "ubuntu"
   package_machine = node['kernel']['machine'] == "x86_64" ? "amd64" : "x86"
   if node['couchbase']['server']['version'] < "3.0.0"
     default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}_#{package_machine}.deb"
+  elsif [12,14].include?(node.lsb.release.to_i)
+    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-ubuntu#{node.lsb.release.to_i}.04_#{package_machine}.deb"
   else
-    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-ubuntu12.04_#{package_machine}.deb"
+    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-ubuntu14.04_#{package_machine}.deb"
   end
 when "windows"
   if node['kernel']['machine'] != 'x86_64'
