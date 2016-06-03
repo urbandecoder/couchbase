@@ -26,11 +26,14 @@
 
 case node['platform_family']
 when "debian"
-  apt_repository "couchbase" do
-    uri "http://packages.couchbase.com/ubuntu"
-    distribution node['lsb']['codename']
-    components ["#{node['lsb']['codename']}/main"]
-    key "http://packages.couchbase.com/ubuntu/couchbase.key"
+  remote_file "#{Chef::Config[:file_cache_path]}/couchbase-release-1.0-0-amd64.deb" do
+    source "http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-0-amd64.deb"
+    action :create_if_missing
+  end
+
+  dpkg_package "couchbase-release" do
+    source "#{Chef::Config[:file_cache_path]}/couchbase-release-1.0-0-amd64.deb"
+    action :install
   end
 
   %w{libcouchbase2 libcouchbase-dev}.each do |p|
@@ -40,11 +43,6 @@ when "debian"
   end
 
 when "rhel"
-  yum_repository "couchbase-rpm.key" do
-    url "http://packages.couchbase.com/rpm/couchbase-rpm.key"
-    action :add
-  end
-
   case
   when node['platform_version'].to_f >= 5.0 && node['platform_version'].to_f < 6.0
     osver = '5.5'
@@ -54,11 +52,14 @@ when "rhel"
     Chef::Log.error("Platform version #{node['platform_version']} is unsupported by Couchbase C library")
   end
 
-  yum_repository "couchbase" do
-    name "couchbase"
-    description "Couchbase package repository"
-    url "http://packages.couchbase.com/rpm/#{osver}/$basearch/"
-    action :add
+  remote_file "#{Chef::Config[:file_cache_path]}/couchbase-release-1.0-0-x86_64.rpm" do
+    source "http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-0-x86_64.rpm"
+    action :create_if_missing
+  end
+
+  rpm_package "couchbase-release" do
+    source "#{Chef::Config[:file_cache_path]}/couchbase-release-1.0-0-x86_64.rpm"
+    action :install
   end
 
   %w{libcouchbase2 libcouchbase-devel}.each do |p|
