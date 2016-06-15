@@ -3,14 +3,7 @@ Description
 
 Installs and configures Couchbase.
 
-[![Build Status](https://travis-ci.org/urbandecoder/couchbase.png)](https://travis-ci.org/urbandecoder/couchbase)
-
-Adopt Me!
-=========
-
-**This cookbook is up for adoption.** Ever since I started working at Chef Software, Inc. I have not had
-the need to use Couchbase. Therefore I find it difficult to keep up with the issues & PRs being filed on
-this cookbook. If you can help, or become a co-maintainer, please contact me: jdunn@chef.io
+[![Build Status](https://travis-ci.org/disney/couchbase.png)](https://travis-ci.org/disney/couchbase)
 
 Requirements
 ============
@@ -44,7 +37,10 @@ couchbase-server
                                                       defaults to Couchbase's maximum allowed value
 * `node['couchbase']['server']['username']`         - The cluster's username for the REST API and Admin UI
 * `node['couchbase']['server']['password']`         - The cluster's password for the REST API and Admin UI
-* `node['couchbase']['server']['allow_unsigned_packages'] - Whether to allow Couchbase's unsigned packages to be installed (default to 'true')
+* `node['couchbase']['server']['allow_unsigned_packages']` - Whether to allow Couchbase's unsigned packages to be installed (default to 'true')
+* `node['couchbase']['server']['community_edition_guid']` - The GUID of community edition of couchbase-server. Default value set
+* `node['couchbase']['server']['enterprise_edition_guid']` - The GUID of enterprise edition of couchbase-server. Default value set
+* `['couchbase']['server']['service_name']` - name of couchbase-server service. Default "couchbase-server"
 
 client
 ------

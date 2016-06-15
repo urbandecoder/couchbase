@@ -35,9 +35,9 @@ if Chef::Config[:solo]
 
   if !missing_attrs.empty?
     Chef::Application.fatal!([
-        "You must set #{missing_attrs.join(', ')} in chef-solo mode.",
-        "For more information, see https://github.com/juliandunn/couchbase#chef-solo-note"
-      ].join(' '))
+                                 "You must set #{missing_attrs.join(', ')} in chef-solo mode.",
+                                 "For more information, see https://github.com/juliandunn/couchbase#chef-solo-note"
+                             ].join(' '))
   end
 else
   # generate all passwords
@@ -50,28 +50,28 @@ remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server'
 end
 
 case node['platform']
-when "debian", "ubuntu"
-  package "libssl1.0.0"
-  dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
-    notifies :run, "ruby_block[block_until_operational]", :immediately
-  end
-when "redhat", "centos", "scientific", "amazon", "fedora"
-  yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
-    options node['couchbase']['server']['allow_unsigned_packages'] == true ? "--nogpgcheck" : ""
-  end
-when "windows"
+  when "debian", "ubuntu"
+    package "libssl1.0.0"
+    dpkg_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
+      notifies :run, "ruby_block[block_until_operational]", :immediately
+    end
+  when "redhat", "centos", "scientific", "amazon", "fedora"
+    yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
+      options node['couchbase']['server']['allow_unsigned_packages'] == true ? "--nogpgcheck" : ""
+    end
+  when "windows"
 
-  template "#{Chef::Config[:file_cache_path]}/setup.iss" do
-    source "setup.iss.erb"
-    action :create
-  end
+    template "#{Chef::Config[:file_cache_path]}/setup.iss" do
+      source "setup.iss.erb"
+      action :create
+    end
 
-  windows_package "Couchbase Server" do
-    source File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
-    options "/s"
-    installer_type :custom
-    action :install
-  end
+    windows_package "Couchbase Server" do
+      source File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file'])
+      options "/s"
+      installer_type :custom
+      action :install
+    end
 end
 
 ruby_block "block_until_operational" do
@@ -109,7 +109,7 @@ ruby_block "rewrite_couchbase_log_dir_config" do
     file.write_file
   end
 
-  notifies :restart, "service[couchbase-server]"
+  notifies :restart, "service[#{node['couchbase']['server']['service_name']}]"
   not_if "grep '#{log_dir_line}' #{static_config_file}" # XXX won't work on Windows, no 'grep'
 end
 
@@ -127,7 +127,7 @@ directory node['couchbase']['server']['index_path'] do
   recursive true
 end
 
-service "couchbase-server" do
+service node['couchbase']['server']['service_name'] do
   supports :restart => true, :status => true
   action [:enable, :start]
   notifies :create, "ruby_block[block_until_operational]", :immediately
@@ -150,10 +150,10 @@ end
 
 couchbase_settings "web" do
   settings({
-    "username" => node['couchbase']['server']['username'],
-    "password" => node['couchbase']['server']['password'],
-    "port" => 8091,
-  })
+               "username" => node['couchbase']['server']['username'],
+               "password" => node['couchbase']['server']['password'],
+               "port" => 8091,
+           })
 
   username node['couchbase']['server']['username']
   password node['couchbase']['server']['password']

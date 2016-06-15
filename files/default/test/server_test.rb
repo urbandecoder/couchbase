@@ -7,7 +7,7 @@ describe_recipe "couchbase::server" do
   MiniTest::Chef::Resources.register_resource :couchbase_node, :username, :password
 
   describe "couchbase-server service" do
-    let(:couchbase_server) { service "couchbase-server" }
+    let(:couchbase_server) { service node['couchbase']['server']['service_name'] }
 
     it "starts on boot" do
       couchbase_server.must_be_enabled

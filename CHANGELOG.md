@@ -1,3 +1,15 @@
+## v1.4.2 (2016-01-12)
+
+- Adding functionality to allow bucket creation on dedicated ports.
+
+## v1.3.2 (2015-08-28)
+
+- Revert package_machine calculation - broke some environments
+- trigger block[block_until_operational] upon package install on debian
+- password reset occurs when unnecessary, was logging users out of GUI
+- correct couchbase 3.0.0 location
+- pass authentication as header, not on URI (deprecated functionality)
+
 ## v1.3.1 (2015-05-01)
 
 - Remove resource cloning.

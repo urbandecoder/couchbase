@@ -21,6 +21,8 @@
 
 default['couchbase']['server']['edition'] = "community"
 default['couchbase']['server']['version'] = "3.0.0"
+default['couchbase']['server']['community_edition_guid'] = "9E3DC4AA-46D9-4B30-9643-2A97169F02A7"
+default['couchbase']['server']['enterprise_edition_guid'] = "DD309984-2414-FDF4-11AA-85A733064291"
 
 case node['platform']
 when "debian"
@@ -59,9 +61,11 @@ default['couchbase']['server']['package_base_url'] = "http://packages.couchbase.
 default['couchbase']['server']['package_full_url'] = "#{node['couchbase']['server']['package_base_url']}/#{node['couchbase']['server']['package_file']}"
 
 case node['platform_family']
-when "windows"
+  when "windows"
+  default['couchbase']['server']['service_name'] = "CouchbaseServer"
   default['couchbase']['server']['install_dir'] = File.join("C:","Program Files","Couchbase","Server")
-else
+  else
+  default['couchbase']['server']['service_name'] = "couchbase-server"
   default['couchbase']['server']['install_dir'] = "/opt/couchbase"
 end
 
