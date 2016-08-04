@@ -19,6 +19,8 @@ platforms:
 
 - name: centos-6.5
 
+- name: centos-7.1
+
 - name: windows-2012R2
   transport:
     name: winrm
@@ -46,7 +48,7 @@ suites:
       server:
         edition: "enterprise"
         password: "whatever"
-        version: "2.1.0"
+        version: "4.1.1"
 
 - name: moxi
   run_list:

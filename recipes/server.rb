@@ -58,6 +58,7 @@ case node['platform']
   when "redhat", "centos", "scientific", "amazon", "fedora"
     yum_package File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
       options node['couchbase']['server']['allow_unsigned_packages'] == true ? "--nogpgcheck" : ""
+      notifies :run, "ruby_block[block_until_operational]", :immediately
     end
   when "windows"
 

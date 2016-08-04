@@ -37,7 +37,7 @@ when "centos", "redhat", "amazon", "scientific"
   if node['couchbase']['server']['version'] < "3.0.0"
     default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}_#{package_machine}.rpm"
   else
-    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}-#{node['couchbase']['server']['version']}-centos6.#{package_machine}.rpm"
+    default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}-#{node['couchbase']['server']['version']}-#{node['platform']}#{node['platform_version'].to_f.to_i.to_s}.#{package_machine}.rpm"
   end
 when "ubuntu"
   package_machine = node['kernel']['machine'] == "x86_64" ? "amd64" : "x86"
