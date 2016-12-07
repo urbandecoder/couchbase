@@ -54,6 +54,7 @@ class Chef
           "ramQuotaMB" => new_memory_quota_mb,
           "proxyPort" => new_resource.proxyport,
           "replicaNumber" => new_resource.replicas || 0,
+          "flushEnabled" => new_resource.flush_enabled || 0,
         }
       end
 
@@ -85,6 +86,10 @@ class Chef
 
       def bucket_type
         bucket_data["bucketType"] == "membase" ? "couchbase" : bucket_data["bucketType"]
+      end
+
+      def flush_enabled
+        bucket_data["flush_enabled"]
       end
 
       def bucket_data

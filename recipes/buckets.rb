@@ -36,6 +36,7 @@ node['couchbase']['buckets'].each do |bucket_name, bucket_config|
     cluster      bucket_config['cluster'] if bucket_config.has_key?('cluster')
     saslpassword bucket_config['saslpassword'] if bucket_config.has_key?('saslpassword')
     proxyport    bucket_config['proxyPort'] if bucket_config.has_key?('proxyPort')
+    flushEnabled bucket_config['flush_enabled'] if bucket_config.has_key?('flush_enabled')
 
     memory_quota_mb      bucket_config['memory_quota_mb'] if bucket_config.has_key?('memory_quota_mb')
     memory_quota_percent bucket_config['memory_quota_percent'] if bucket_config.has_key?('memory_quota_percent')

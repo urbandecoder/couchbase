@@ -22,6 +22,10 @@ class Chef
         set_or_return(:proxyport, arg, :kind_of => Integer)
       end
 
+      def flush_enabled(arg=nil)
+        set_or_return(:flush_enabled, arg, :kind_of => Integer)
+      end
+
       def memory_quota_mb(arg=nil)
         set_or_return(:memory_quota_mb, arg, :kind_of => Integer, :callbacks => {
           "must be at least 100" => lambda { |quota| quota >= 100 },
