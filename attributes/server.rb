@@ -32,7 +32,7 @@ when "debian"
   else
     default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}-debian7_#{package_machine}.deb"
   end
-when "centos", "redhat", "amazon", "scientific"
+when "oracle", "centos", "redhat", "scientific", "enterpriseenterprise", "amazon", "xenserver", "cloudlinux", "ibm_powerkvm", "parallels", "nexus_centos"
   package_machine = node['kernel']['machine'] == "x86_64" ? "x86_64" : "x86"
   if node['couchbase']['server']['version'] < "3.0.0"
     default['couchbase']['server']['package_file'] = "couchbase-server-#{node['couchbase']['server']['edition']}_#{node['couchbase']['server']['version']}_#{package_machine}.rpm"
