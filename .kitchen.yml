@@ -32,21 +32,58 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[couchbase::server]
+  - recipe[couchbase::cluster]
+  - recipe[couchbase::buckets]
   attributes:
     couchbase:
-      server:
-        password: "whatever"
+      cluster:
+        name: "dev"
+        username: "admin"
+        password: "test1234"
+        memory_quota_mb: 512
+      buckets:
+        one:
+          cluster: "dev"
+          type: "memcached"
+          saslpassword: "nevertellanyone"
+          memory_quota_mb: 256
+          replicas: 0
+        two:
+          cluster: "dev"
+          type: "couchbase"
+          saslpassword: "mustbedifferent"
+          memory_quota_percent: 0.5
+          replicas: 1
 
 - name: server-enterprise
   run_list:
   - recipe[minitest-handler]
   - recipe[couchbase::server]
+  - recipe[couchbase::cluster]
+  - recipe[couchbase::buckets]
   attributes:
     couchbase:
       server:
         edition: "enterprise"
-        password: "whatever"
-        version: "2.1.0"
+        version: "2.2.0"
+      cluster:
+        name: "dev"
+        username: "admin"
+        password: "test1234"
+        memory_quota_mb: 512
+      buckets:
+        one:
+          cluster: "dev"
+          type: "memcached"
+          saslpassword: "nevertellanyone"
+          memory_quota_mb: 256
+          replicas: 0
+        two:
+          cluster: "dev"
+          type: "couchbase"
+          saslpassword: "mustbedifferent"
+          memory_quota_percent: 0.5
+          replicas: 1
 
 - name: moxi
   run_list:

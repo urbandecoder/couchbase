@@ -22,7 +22,7 @@ Note that Couchbase Server does not support Windows 8 or Server 2012: see http:/
 Attributes
 ==========
 
-couchbase-server
+server
 ----------------
 
 * `node['couchbase']['server']['edition']`          - The edition of couchbase-server to install, "community" or "enterprise"
@@ -33,7 +33,6 @@ couchbase-server
 * `node['couchbase']['server']['database_path']`    - The directory Couchbase should persist data to
 * `node['couchbase']['server']['index_path']`       - The directory Couchbase should write indexes to
 * `node['couchbase']['server']['log_dir']`          - The directory Couchbase should log to
-* `node['couchbase']['server']['memory_quota_mb']`  - The per server RAM quota for the entire cluster in megabytes
                                                       defaults to Couchbase's maximum allowed value
 * `node['couchbase']['server']['username']`         - The cluster's username for the REST API and Admin UI
 * `node['couchbase']['server']['password']`         - The cluster's password for the REST API and Admin UI
@@ -41,6 +40,12 @@ couchbase-server
 * `node['couchbase']['server']['community_edition_guid']` - The GUID of community edition of couchbase-server. Default value set
 * `node['couchbase']['server']['enterprise_edition_guid']` - The GUID of enterprise edition of couchbase-server. Default value set
 * `['couchbase']['server']['service_name']` - name of couchbase-server service. Default "couchbase-server"
+
+cluster
+----------------
+
+* `node['couchbase']['cluster']['name']`            - The name of the cluster this server belongs to
+* `node['couchbase']['cluster']['memory_quota_mb']` - The per server RAM quota for the entire cluster in megabytes
 
 client
 ------
@@ -52,7 +57,7 @@ moxi
 
 * `node['couchbase']['moxi']['version']`            - The version of moxi to install
 * `node['couchbase']['moxi']['package_file']`       - The package file to download
-* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located 
+* `node['couchbase']['moxi']['package_base_url']`   - The base URL where the packages are located
 * `node['couchbase']['moxi']['package_full_url']`   - The full URL to the moxi package
 * `node['couchbase']['moxi']['cluster_server']`     - The bootstrap server for moxi to contact for the node list
 * `node['couchbase']['moxi']['cluster_rest_url']`   - The bootstrap server's full REST URL for retrieving the initial node list
