@@ -1,3 +1,8 @@
+## v1.5.0
+
+- Added official yum and apt repos per updated installation instructions
+- Fix flushEnabled property
+
 ## v1.4.2 (2016-01-12)
 
 - Adding functionality to allow bucket creation on dedicated ports.
