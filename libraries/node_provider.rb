@@ -1,6 +1,7 @@
 require "chef/provider"
 require "net/http"
 require File.join(File.dirname(__FILE__), "client")
+require File.join(File.dirname(__FILE__), "helper")
 
 class Chef
   class Provider
@@ -8,6 +9,20 @@ class Chef
       include Couchbase::Client
 
       def load_current_resource
+        # Wait until couchbase is up
+        Chef::Log.info "Waiting until Couchbase is listening on port #{node['couchbase']['server']['port']}"
+        until CouchbaseHelper.service_listening?(node['couchbase']['server']['port']) do
+          sleep 1
+          Chef::Log.debug(".")
+        end
+
+        Chef::Log.info "Waiting until the Couchbase admin API is responding"
+        test_url = URI.parse("http://localhost:#{node['couchbase']['server']['port']}")
+        until CouchbaseHelper.endpoint_responding?(test_url) do
+          sleep 1
+          Chef::Log.debug(".")
+        end
+
         @current_resource = Chef::Resource::CouchbaseNode.new @new_resource.name
         @current_resource.id @new_resource.id
         @current_resource.database_path node_database_path
