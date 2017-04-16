@@ -134,6 +134,8 @@ service node['couchbase']['server']['service_name'] do
 end
 
 couchbase_node "self" do
+  retries 5
+  retry_delay 2
   database_path node['couchbase']['server']['database_path']
   index_path node['couchbase']['server']['index_path']
 
