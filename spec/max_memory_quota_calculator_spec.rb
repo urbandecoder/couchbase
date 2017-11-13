@@ -15,7 +15,7 @@ describe Couchbase::MaxMemoryQuotaCalculator do
         }
       end
 
-      it { calculator.should be_a_kind_of described_class }
+      it { calculator.should be_a_kind_of(described_class) }
 
       it "initializes the calculator with the node's memory total" do
         calculator.total_in_bytes.should == 1_774_850_048
@@ -32,11 +32,11 @@ describe Couchbase::MaxMemoryQuotaCalculator do
 
   describe "#in_megabytes" do
     it "is 819MB for 1GB, using the max 80% rule" do
-      described_class.new(1.gigabyte).in_megabytes.should eql 819
+      described_class.new(1.gigabyte).in_megabytes.should eql(819)
     end
 
     it "is 7GB for 8GB, using the max minus 1GB rule" do
-      described_class.new(8.gigabytes).in_megabytes.should eql (7.gigabytes / 1024 / 1024)
+      described_class.new(8.gigabytes).in_megabytes.should eql(7.gigabytes / 1024 / 1024)
     end
   end
 end
