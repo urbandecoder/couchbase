@@ -5,6 +5,7 @@ class Chef
   class Resource
     class CouchbaseBucket < Resource
       include Couchbase::CredentialsAttributes
+      provides :couchbase_bucket
 
       def bucket(arg=nil)
         set_or_return(:bucket, arg, :kind_of => String, :name_attribute => true)
@@ -17,7 +18,7 @@ class Chef
       def exists(arg=nil)
         set_or_return(:exists, arg, :kind_of => [TrueClass, FalseClass], :required => true)
       end
-      
+
       def proxyport(arg=nil)
         set_or_return(:proxyport, arg, :kind_of => Integer)
       end

@@ -7,6 +7,9 @@ class Chef
     class CouchbaseBucket < Provider
       include Couchbase::Client
       include Couchbase::ClusterData
+      provides :couchbase_bucket
+
+
 
       def load_current_resource
         @current_resource = Resource::CouchbaseBucket.new @new_resource.name

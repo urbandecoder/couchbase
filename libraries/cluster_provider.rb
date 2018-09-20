@@ -1,12 +1,13 @@
-require "chef/provider"
-require File.join(File.dirname(__FILE__), "client")
-require File.join(File.dirname(__FILE__), "cluster_data")
+require 'chef/provider'
+require_relative 'client'
+require_relative 'cluster_data'
 
 class Chef
   class Provider
-    class CouchbaseCluster < Provider
+    class CouchbaseCluster < Chef::Provider
       include Couchbase::Client
       include Couchbase::ClusterData
+      provides :couchbase_cluster
 
       def load_current_resource
         @current_resource = Resource::CouchbaseCluster.new @new_resource.name

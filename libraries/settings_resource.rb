@@ -5,6 +5,7 @@ class Chef
   class Resource
     class CouchbaseSettings < Resource
       include Couchbase::CredentialsAttributes
+      provides :couchbase_settings
 
       def group(arg=nil)
         set_or_return(:group, arg, :kind_of => String, :name_attribute => true)
