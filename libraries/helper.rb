@@ -23,7 +23,6 @@
 # Shamelessly stolen from Opscode's jenkins cookbook. Works for now.
 
 require 'chef/mixin/shell_out'
-require 'chef/rest'
 
 module CouchbaseHelper
   extend Chef::Mixin::ShellOut
