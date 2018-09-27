@@ -4,7 +4,7 @@ require_relative 'client'
 
 class Chef
   class Provider
-    class CouchbaseNode < Chef::Provider::LWRPBase
+    class CouchbaseNode < Chef::Provider
       include Couchbase::Client
       provides :couchbase_node
 
