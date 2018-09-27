@@ -1,11 +1,13 @@
-require "chef/provider"
-require "net/http"
-require File.join(File.dirname(__FILE__), "client")
+require 'chef/provider'
+require 'net/http'
+require_relative 'client'
 
 class Chef
   class Provider
-    class CouchbaseNode < Provider
+    class CouchbaseNode < Chef::Provider
       include Couchbase::Client
+      provides :couchbase_node
+
 
       def load_current_resource
         @current_resource = Chef::Resource::CouchbaseNode.new @new_resource.name

@@ -1,10 +1,11 @@
-require "chef/resource"
-require File.join(File.dirname(__FILE__), "credentials_attributes")
+require 'chef/resource'
+require_relative 'credentials_attributes'
 
 class Chef
   class Resource
     class CouchbaseCluster < Resource
       include Couchbase::CredentialsAttributes
+      provides :couchbase_cluster
 
       def cluster(arg=nil)
         set_or_return(:cluster, arg, :kind_of => String, :name_attribute => true)

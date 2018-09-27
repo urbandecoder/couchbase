@@ -41,7 +41,7 @@ if Chef::Config[:solo]
   end
 else
   # generate all passwords
-  (node.set['couchbase']['server']['password'] = secure_password && node.save) unless node['couchbase']['server']['password']
+  (node.default['couchbase']['server']['password'] = secure_password) unless node['couchbase']['server']['password']
 end
 
 remote_file File.join(Chef::Config[:file_cache_path], node['couchbase']['server']['package_file']) do
@@ -74,23 +74,7 @@ case node['platform_family']
     end
 end
 
-ruby_block "block_until_operational" do
-  block do
-    Chef::Log.info "Waiting until Couchbase is listening on port #{node['couchbase']['server']['port']}"
-    until CouchbaseHelper.service_listening?(node['couchbase']['server']['port']) do
-      sleep 1
-      Chef::Log.debug(".")
-    end
 
-    Chef::Log.info "Waiting until the Couchbase admin API is responding"
-    test_url = URI.parse("http://localhost:#{node['couchbase']['server']['port']}")
-    until CouchbaseHelper.endpoint_responding?(test_url) do
-      sleep 1
-      Chef::Log.debug(".")
-    end
-  end
-  action :nothing
-end
 
 directory node['couchbase']['server']['log_dir'] do
   owner "couchbase"
@@ -128,12 +112,32 @@ directory node['couchbase']['server']['index_path'] do
 end
 
 service node['couchbase']['server']['service_name'] do
-  supports :restart => true, :status => true
+  supports(
+    restart: true,
+    status: true
+  )
   action [:enable, :start]
-  notifies :create, "ruby_block[block_until_operational]", :immediately
+  notifies :run, 'ruby_block[block_until_operational]', :immediately
 end
 
-couchbase_node "self" do
+ruby_block 'block_until_operational' do
+  block do
+    Chef::Log.info "Waiting until Couchbase is listening on port #{node['couchbase']['server']['port']}"
+    until CouchbaseHelper.service_listening?(node['couchbase']['server']['port']) do
+      sleep 1
+      Chef::Log.info('.')
+    end
+
+    Chef::Log.info 'Waiting until the Couchbase admin API is responding'
+    test_url = URI.parse("http://localhost:#{node['couchbase']['server']['port']}")
+    until CouchbaseHelper.endpoint_responding?(test_url) do
+      sleep 1
+      Chef::Log.info('.')
+    end
+  end
+  action :run
+end
+couchbase_node 'self' do
   database_path node['couchbase']['server']['database_path']
   index_path node['couchbase']['server']['index_path']
 

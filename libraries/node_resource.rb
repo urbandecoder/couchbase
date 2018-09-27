@@ -1,10 +1,13 @@
-require "chef/resource"
-require File.join(File.dirname(__FILE__), "credentials_attributes")
+require 'chef/resource'
+require_relative 'credentials_attributes'
+require_relative 'client'
 
 class Chef
   class Resource
-    class CouchbaseNode < Resource
+    class CouchbaseNode < Chef::Resource
       include Couchbase::CredentialsAttributes
+      include Couchbase::Client
+      provides :couchbase_node
 
       def id(arg=nil)
         set_or_return(:id, arg, :kind_of => String, :name_attribute => true)
